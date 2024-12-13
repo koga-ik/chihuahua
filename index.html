@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Photo Archive</title>
+    <title>Chihuahua Archive</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -27,7 +27,7 @@
             gap: 10px;
             align-items: center;
         }
-        .controls button {
+        .controls button, .controls select, .controls input[type="file"] {
             padding: 10px 20px;
             font-size: 16px;
             border: none;
@@ -35,8 +35,9 @@
             color: white;
             cursor: pointer;
             border-radius: 5px;
+            margin-bottom: 10px;
         }
-        .controls button:hover {
+        .controls button:hover, .controls select:hover, .controls input[type="file"]:hover {
             background-color: #555;
         }
         .gallery {
@@ -76,31 +77,72 @@
                 }
             });
         }
+
+        function uploadPhoto() {
+            const selectedDate = document.getElementById('dateSelect').value;
+            const fileInput = document.getElementById('photoUpload');
+            const gallery = document.querySelector('.gallery');
+
+            if (fileInput.files.length > 0 && selectedDate) {
+                const file = fileInput.files[0];
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    const newGalleryItem = document.createElement('div');
+                    newGalleryItem.classList.add('gallery-item');
+                    newGalleryItem.dataset.date = selectedDate;
+                    newGalleryItem.innerHTML = `
+                        <img src="${e.target.result}" alt="Uploaded Photo">
+                        <div class="date">${selectedDate}</div>
+                    `;
+                    gallery.appendChild(newGalleryItem);
+                    alert('Photo uploaded successfully!');
+                };
+
+                reader.readAsDataURL(file);
+            } else {
+                alert('Please select a date and a photo to upload!');
+            }
+        }
     </script>
 </head>
 <body>
     <header>
-        <h1>Photo Archive</h1>
-        <p>Organize and view your photos by date</p>
+        <h1>Chihuahua Archive</h1>
+        <p>Organize and view your photos by category</p>
     </header>
     <main>
         <div class="controls">
-            <button onclick="filterByDate('2024-12-03')">2024-12-03</button>
-            <button onclick="filterByDate('2024-12-02')">2024-12-02</button>
-            <button onclick="filterByDate('2024-12-01')">2024-12-01</button>
+            <select id="dateSelect">
+                <option value="">Select a category</option>
+                <option value="귀여운치와와">귀여운치와와</option>
+                <option value="웃긴치와와">웃긴치와와</option>
+                <option value="졸린치와와">졸린치와와</option>
+                <option value="멋진치와와">멋진치와와</option>
+                <option value="전기톱치와와">전기톱치와와</option>
+                <option value="기타등등">기타등등</option>
+            </select>
+            <input type="file" id="photoUpload" accept="image/*">
+            <button onclick="uploadPhoto()">Upload Photo</button>
         </div>
         <section class="gallery">
-            <div class="gallery-item" data-date="2024-12-01">
-                <img src="https://search.pstatic.net/sunny/?src=https%3A%2F%2Fst2.depositphotos.com%2F1004592%2F42813%2Fi%2F450%2Fdepositphotos_428134152-stock-photo-little-chihuahua-front-white-background.jpg&type=sc960_832" alt="2024-12-01 Photo">
-                <div class="date">2024-12-01</div>
+            <div class="gallery-item" data-date="귀여운치와와">
+                <div class="date">귀여운치와와</div>
             </div>
-            <div class="gallery-item" data-date="2024-12-02">
-                <img src="example-photo2.jpg" alt="Example Photo 2">
-                <div class="date">2024-12-02</div>
+            <div class="gallery-item" data-date="웃긴치와와">
+                <div class="date">웃긴치와와</div>
             </div>
-            <div class="gallery-item" data-date="2024-12-03">
-                <img src="example-photo3.jpg" alt="Example Photo 3">
-                <div class="date">2024-12-03</div>
+            <div class="gallery-item" data-date="졸린치와와">
+                <div class="date">졸린치와와</div>
+            </div>
+            <div class="gallery-item" data-date="멋진치와와">
+                <div class="date">멋진치와와</div>
+            </div>
+            <div class="gallery-item" data-date="전기톱치와와">
+                <div class="date">전기톱치와와</div>
+            </div>
+            <div class="gallery-item" data-date="기타등등">
+                <div class="date">기타등등</div>
             </div>
         </section>
     </main>
